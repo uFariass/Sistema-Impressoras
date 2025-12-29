@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8082;">
+    <title>Sistema Elgisa</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard-extra.css">
+    <link rel="stylesheet" href="css/professional.css">
+    <link rel="stylesheet" href="css/modal-details.css">
+    <link rel="stylesheet" href="css/action-buttons.css">
+    <link rel="stylesheet" href="css/system-info.css">
+    <link rel="stylesheet" href="css/dropdown-menu.css">
+    <link rel="stylesheet" href="css/dashboard-home.css">
+
+</head>
+<body>
+    <div class="dashboard">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="logo.jpg" alt="Elgisa" class="sidebar-logo" onclick="location.reload()" style="cursor: pointer;">
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" onclick="showSection('buscar')" class="active">Buscar Impressoras</a></li>
+                <li><a href="#" onclick="showSection('cadastrar')" id="menuCadastrar">Cadastrar Impressora</a></li>
+            </ul>
+        </nav>
+        
+        <div class="main-content">
+            <header class="header">
+                <div>
+                    <h1 id="pageTitle">Buscar Impressoras</h1>
+                    <div class="breadcrumb" id="breadcrumb">
+                        <span class="breadcrumb-item active">Buscar</span>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar" onclick="showUserInfo()" style="cursor: pointer;">U</div>
+                    <a href="#" onclick="showUserInfo()" id="userName" style="color: #dc2626; text-decoration: none; font-weight: 500;">Usuário</a>
+                    <a href="#" onclick="logout()" class="btn-logout">Sair</a>
+                </div>
+            </header>
+            
+            <main class="content">
+
+                <!-- BUSCAR SECTION -->
+                <div id="buscarSection" class="section" style="display: block;">
+                    <!-- Search Bar -->
+                    <div class="search-bar-container">
+                        <div class="search-wrapper">
+                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <input type="text" id="searchInput" class="enterprise-search" placeholder="Buscar por número de série, NF ou nome do item...">
+                        </div>
+                    </div>
+                    
+                    <!-- Results Table -->
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h2 class="results-title">Impressoras</h2>
+                            <div class="header-actions">
+                                <div class="results-count" id="resultsCount">0 resultados</div>
+                                <button class="btn-export-pdf" onclick="exportToPDF()">
+                                    Exportar PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>NF Simpress</th>
+                                        <th>Número de Série</th>
+                                        <th id="actionsHeader" style="width: 120px; display: none;">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="impressorasTable">
+                                    <!-- Loading skeleton will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="pagination">
+                            <div class="pagination-info">
+                                Mostrando <span id="showingStart">0</span> a <span id="showingEnd">0</span> de <span id="totalRecords">0</span> registros
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="page-btn" onclick="previousPage()" id="prevBtn">« Anterior</button>
+                                <button class="page-btn active" onclick="goToPage(1)">1</button>
+                                <button class="page-btn" onclick="nextPage()" id="nextBtn">Próximo »</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CADASTRAR SECTION -->
+                <div id="cadastrarSection" class="section" style="display: none;">
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h2 class="results-title">Nova Impressora</h2>
+                            <div class="results-count">Preencha as informações</div>
+                        </div>
+                        
+                        <form id="cadastroForm" class="enterprise-form" style="padding: 32px;">
+                            <div class="form-section">
+                                <div class="form-grid">
+                                    <div class="form-field">
+                                        <label for="nfSimpress" class="field-label">NF Simpress</label>
+                                        <input type="text" id="nfSimpress" name="nfSimpress" class="field-input" required>
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="numeroSerie" class="field-label">Número de Série</label>
+                                        <input type="text" id="numeroSerie" name="numeroSerie" class="field-input" required>
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="nomeItem" class="field-label">Nome do Item</label>
+                                        <input type="text" id="nomeItem" name="nomeItem" class="field-input" required>
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="valor" class="field-label">Valor</label>
+                                        <input type="text" id="valor" name="valor" class="field-input">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <div class="form-grid">
+                                    <div class="form-field">
+                                        <label for="osInspecao" class="field-label">OS Inspeção</label>
+                                        <input type="text" id="osInspecao" name="osInspecao" class="field-input">
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="osRevisao" class="field-label">OS Revisão</label>
+                                        <input type="text" id="osRevisao" name="osRevisao" class="field-input">
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="nfElgisa" class="field-label">NF Elgisa</label>
+                                        <input type="text" id="nfElgisa" name="nfElgisa" class="field-input">
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="servico" class="field-label">Serviço</label>
+                                        <input type="text" id="servico" name="servico" class="field-input">
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="statusReparo" class="field-label">Status do Reparo</label>
+                                        <select id="statusReparo" name="statusReparo" class="field-input">
+                                            <option value="">Selecione...</option>
+                                            <option value="reparado">Reparado</option>
+                                            <option value="nao reparado">Não Reparado</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="statusServico" class="field-label">Status do Serviço</label>
+                                        <select id="statusServico" name="statusServico" class="field-input">
+                                            <option value="">Selecione...</option>
+                                            <option value="Iniciado">Iniciado</option>
+                                            <option value="Finalizado">Finalizado</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" onclick="resetForm()">Cancelar</button>
+                                <button type="submit" class="btn-primary">Cadastrar Impressora</button>
+                            </div>
+                        </form>
+                        
+                        <div id="successMessage" class="success-notification" style="display: none; margin: 16px 32px;"></div>
+                    </div>
+                </div>
+                
+
+            </main>
+        </div>
+    </div>
+    
+    <!-- MODAL DETALHES -->
+    <div id="detalhesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalhes da Impressora</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="detalhesContent">
+                    <!-- Conteúdo será preenchido dinamicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL USUARIO -->
+    <div id="userModal" class="modal">
+        <div class="modal-content user-modal">
+            <span class="close" onclick="closeUserModal()">&times;</span>
+            <div class="user-modal-header">
+                <div class="user-avatar-large" id="userAvatarLarge">U</div>
+                <div class="user-basic-info">
+                    <h2 id="userModalName">Nome do Usuário</h2>
+                    <p class="user-role" id="userModalRole">Cargo</p>
+                    <span class="user-status active">Online</span>
+                </div>
+            </div>
+            <div class="user-modal-body">
+                <div class="info-section">
+                    <h3>Dados Pessoais</h3>
+                    <div id="userPersonalInfo"></div>
+                </div>
+                <div class="info-section">
+                    <h3>Dados do Sistema</h3>
+                    <div id="userSystemInfo"></div>
+                </div>
+
+            </div>
+            <div class="user-modal-footer">
+                <button class="btn btn-secondary" onclick="closeUserModal()">Fechar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+    
+    <script src="js/security.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

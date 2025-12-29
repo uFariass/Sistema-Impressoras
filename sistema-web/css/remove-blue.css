@@ -1,0 +1,47 @@
+/* REMOVE AZUL COMPLETAMENTE - FORÇA MÁXIMA */
+* {
+    outline: none !important;
+}
+
+*:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid #6b7280 !important;
+}
+
+input,
+textarea,
+select {
+    outline: none !important;
+    border: 1px solid #d1d5db !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid #6b7280 !important;
+}
+
+.field-input {
+    outline: none !important;
+    border: 1px solid #d1d5db !important;
+}
+
+.field-input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid #6b7280 !important;
+}
+
+.enterprise-search {
+    outline: none !important;
+    border: 1px solid #d1d5db !important;
+}
+
+.enterprise-search:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid #6b7280 !important;
+}
